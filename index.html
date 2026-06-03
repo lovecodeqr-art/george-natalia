@@ -19,7 +19,7 @@
                 <div class="letter">
                     <div class="letter-text">
                         <h2 id="card-title">Para Alguém Especial</h2>
-                        <p id="card-short-text">Você mudou o meu mundo por completo...</p>
+                        <p id="card-short-text">Você mudou o meu world por completo...</p>
                     </div>
                 </div>
                 <div class="heart-seal">❤️</div>
@@ -52,8 +52,7 @@
                 <button class="nav-btn prev-btn" onclick="changeSlide(-1)">&#10094;</button>
                 <button class="nav-btn next-btn" onclick="changeSlide(1)">&#10095;</button>
             </div>
-            <div class="slider-dots" id="slider-dots">
-                </div>
+            <div class="slider-dots" id="slider-dots"></div>
         </section>
 
         <section class="counter-section scroll-reveal">
@@ -109,8 +108,7 @@
 
         <section class="gallery-section scroll-reveal">
             <h2>Nossos Momentos Favoritos</h2>
-            <div class="gallery-scroll" id="horizontal-gallery">
-                </div>
+            <div class="gallery-scroll" id="horizontal-gallery"></div>
             <p class="scroll-tip">➔ Arraste ou deslize para o lado para ver mais</p>
         </section>
 
@@ -118,8 +116,7 @@
             <div class="glass-card">
                 <div class="sparkle"></div>
                 <h3>Minha Promessa para Você</h3>
-                <p id="main-love-text">
-                    </p>
+                <p id="main-love-text"></p>
                 <span class="signature">Com todo o meu amor, para sempre. ❤️</span>
             </div>
         </section>
@@ -130,9 +127,8 @@
 
     </main>
 
-    <div id="youtube-audio-player" style="position: absolute; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none;"></div>
+    <audio id="local-audio-player" loop preload="auto" style="display:none; width:0; height:0; visibility:hidden;"></audio>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script src="script.js"></script>
 </body>
 </html>
