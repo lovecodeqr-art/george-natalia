@@ -1,6 +1,6 @@
-﻿/* ==========================================================================\
+/* ==========================================================================
    ÁREA DE EDIÇÃO FÁCIL - ALTERE OS DADOS DO SEU CASAL AQUI
-\========================================================================== */
+========================================================================== */
 
 const CONFIG = {
     nomesCasal: "George Filho & Natalia Duartt",
@@ -19,9 +19,10 @@ const CONFIG = {
     carrosselFotoInicio: 11,
     carrosselFotoFim: 20,
 
-    // ===== CONFIGURAÇÃO DE MÚSICA =====
+    // ===== CONFIGURAÇÃO DE MÚSICA LOCAL MP3 =====
+    // Coloque o arquivo MP3 na pasta "musica/" e digite o nome correto aqui
+    arquivoMP3: "musica/nossa-musica.mp3",
     nomeMusica: "Dilsinho - Duas",
-    youtubeId: "Bn5rlOIizP8",
 
     // ===== TEXTO PRINCIPAL =====
     textoApaixonante: `Meu amor,
@@ -38,9 +39,9 @@ E não me preocupar como será o amanhã
 Se estamos sempre juntos 🎼🎶💖❣️"`
 };
 
-/* ==========================================================================\
+/* ==========================================================================
    FRASES ROMÂNTICAS DO CORAÇÃO
-\========================================================================== */
+========================================================================== */
 
 const FRASES_CORACAO = [
     "Você é o meu lugar favorito no mundo inteirinho! ❤️",
@@ -65,9 +66,9 @@ const FRASES_CORACAO = [
     "Minha vida ganhou uma trilha sonora muito mais bonita desde que você chegou."
 ];
 
-/* ==========================================================================\
+/* ==========================================================================
    INICIALIZAÇÃO DA PÁGINA
-\========================================================================== */
+========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
     carregarConteudoInicial();
@@ -79,11 +80,24 @@ function carregarConteudoInicial() {
     document.getElementById("card-short-text").innerText = CONFIG.resumoCarta;
     document.getElementById("couple-names").innerText = CONFIG.nomesCasal;
     document.getElementById("main-love-text").innerText = CONFIG.textoApaixonante;
+    
+    // Vincula o título da música configurado ao player
+    const musicTitle = document.getElementById("music-title");
+    if (musicTitle) {
+        musicTitle.innerText = CONFIG.nomeMusica;
+    }
+
+    // Vincula dinamicamente o arquivo MP3 local à tag de áudio escondida
+    const localAudio = document.getElementById("local-audio-player");
+    if (localAudio) {
+        localAudio.src = CONFIG.arquivoMP3;
+        localAudio.load(); // Deixa o arquivo pré-carregado na memória do celular
+    }
 }
 
-/* ==========================================================================\
+/* ==========================================================================
    MONTAGEM AUTOMÁTICA DAS FOTOS
-\========================================================================== */
+========================================================================== */
 
 function montarEstruturasDeFotos() {
     const sliderContainer = document.getElementById("main-slider");
@@ -98,19 +112,13 @@ function montarEstruturasDeFotos() {
     // ===== SLIDER SUPERIOR =====
     for (let i = CONFIG.sliderFotoInicio; i <= CONFIG.sliderFotoFim; i++) {
         const slideDiv = document.createElement("div");
-
         slideDiv.className = `slide-item ${isFirst ? "active" : ""}`;
 
         const imgPath = `imag/${CONFIG.prefixoFotos}${i}${CONFIG.extensaoFotos}`;
-
         slideDiv.style.backgroundImage = `url('${imgPath}')`;
-
-        slideDiv.innerHTML = `
-            <img src="${imgPath}" alt="Nosso momento">
-        `;
+        slideDiv.innerHTML = `<img src="${imgPath}" alt="Nosso momento">`;
 
         const prevBtn = sliderContainer.querySelector(".prev-btn");
-
         if (prevBtn) {
             sliderContainer.insertBefore(slideDiv, prevBtn);
         } else {
@@ -119,13 +127,9 @@ function montarEstruturasDeFotos() {
 
         if (dotsContainer) {
             const dotSpan = document.createElement("span");
-
             dotSpan.className = `dot ${isFirst ? "active" : ""}`;
-
             const currentIdx = indexDot;
-
             dotSpan.onclick = () => showSlide(currentIdx);
-
             dotsContainer.appendChild(dotSpan);
         }
 
@@ -136,9 +140,7 @@ function montarEstruturasDeFotos() {
     // ===== GALERIA HORIZONTAL =====
     for (let i = CONFIG.carrosselFotoInicio; i <= CONFIG.carrosselFotoFim; i++) {
         const itemDiv = document.createElement("div");
-
         itemDiv.className = "gallery-item";
-
         itemDiv.innerHTML = `
             <img 
                 src="imag/${CONFIG.prefixoFotos}${i}${CONFIG.extensaoFotos}" 
@@ -146,14 +148,13 @@ function montarEstruturasDeFotos() {
                 draggable="false"
             >
         `;
-
         galleryContainer.appendChild(itemDiv);
     }
 }
 
-/* ==========================================================================\
+/* ==========================================================================
    CONTROLE DO SLIDER
-\========================================================================== */
+========================================================================== */
 
 let currentSlide = 0;
 let sliderTimer = null;
@@ -175,13 +176,8 @@ function showSlide(index) {
     slides.forEach(slide => slide.classList.remove("active"));
     dots.forEach(dot => dot.classList.remove("active"));
 
-    if (slides[currentSlide]) {
-        slides[currentSlide].classList.add("active");
-    }
-
-    if (dots[currentSlide]) {
-        dots[currentSlide].classList.add("active");
-    }
+    if (slides[currentSlide]) slides[currentSlide].classList.add("active");
+    if (dots[currentSlide]) dots[currentSlide].classList.add("active");
 
     resetSliderTimer();
 }
@@ -192,20 +188,18 @@ function changeSlide(direction) {
 
 function resetSliderTimer() {
     if (sliderTimer) clearInterval(sliderTimer);
-
     sliderTimer = setInterval(() => {
         changeSlide(1);
     }, 4000);
 }
 
-/* ==========================================================================\
+/* ==========================================================================
    CRONÔMETRO DO RELACIONAMENTO
-\========================================================================== */
+========================================================================== */
 
 function atualizarContador() {
     const dataPassada = new Date(CONFIG.dataInicio).getTime();
     const agora = new Date().getTime();
-
     const diferenca = agora - dataPassada;
 
     if (isNaN(dataPassada)) {
@@ -240,9 +234,9 @@ function atualizarContador() {
     if (elMillis) elMillis.innerText = String(milisegundos).padStart(3, "0");
 }
 
-/* ==========================================================================\
+/* ==========================================================================
    CORAÇÃO INTERATIVO
-\========================================================================== */
+========================================================================== */
 
 function popHeart(event) {
     const heart = document.getElementById("clickable-heart");
@@ -259,21 +253,17 @@ function popHeart(event) {
     if (typeof Coracao === "function") {
         for (let i = 0; i < 35; i++) {
             let p = new Coracao();
-
             p.x = event.clientX || window.innerWidth / 2;
             p.y = event.clientY || window.innerHeight / 2;
             p.velocidadeY = (Math.random() * 4 - 2) * 2;
             p.oscilacaoDistancia = Math.random() * 3 + 1;
             p.tamanho = Math.random() * 15 + 10;
             p.opacidade = Math.random() * 0.7 + 0.3;
-
-            particulas.push(p);
+            partculas.push(p);
         }
     }
 
-    if (heart) {
-        heart.style.transform = "scale(0)";
-    }
+    if (heart) heart.style.transform = "scale(0)";
 
     setTimeout(() => {
         if (heart) heart.classList.add("hidden");
@@ -285,60 +275,41 @@ function resetHeart() {
     const heart = document.getElementById("clickable-heart");
     const phraseBox = document.getElementById("heart-phrase-box");
 
-    if (phraseBox) {
-        phraseBox.classList.add("hidden");
-    }
-
-    if (heart) {
-        heart.classList.remove("hidden");
-    }
+    if (phraseBox) phraseBox.classList.add("hidden");
+    if (heart) heart.classList.remove("hidden");
 
     setTimeout(() => {
-        if (heart) {
-            heart.style.transform = "scale(1)";
-        }
+        if (heart) heart.style.transform = "scale(1)";
     }, 50);
 }
 
-/* ==========================================================================\
+/* ==========================================================================
    ABERTURA DA CARTA
-\========================================================================== */
+========================================================================== */
 
 function openEnvelope() {
     const wrapper = document.querySelector(".envelope-wrapper");
-
-    if (wrapper) {
-        wrapper.classList.add("open");
-    }
+    if (wrapper) wrapper.classList.add("open");
 
     setTimeout(() => {
         const welcomeScreen = document.getElementById("welcome-screen");
         const mainContent = document.getElementById("main-content");
 
-        if (welcomeScreen) {
-            welcomeScreen.classList.add("fade-out");
-        }
-
-        if (mainContent) {
-            mainContent.classList.remove("hidden");
-        }
+        if (welcomeScreen) welcomeScreen.classList.add("fade-out");
+        if (mainContent) mainContent.classList.remove("hidden");
 
         resetSliderTimer();
-
         setInterval(atualizarContador, 40);
-
         initScrollReveal();
-
     }, 1200);
 }
 
-/* ==========================================================================\
+/* ==========================================================================
    SCROLL REVEAL
-\========================================================================== */
+========================================================================== */
 
 function initScrollReveal() {
     const targets = document.querySelectorAll(".scroll-reveal");
-
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -356,152 +327,91 @@ function initScrollReveal() {
     }, 200);
 }
 
-/* ==========================================================================\
+/* ==========================================================================
    GALERIA ARRASTÁVEL
-\========================================================================== */
+========================================================================== */
 
 const sliderGaleria = document.getElementById("horizontal-gallery");
-
 let isDown = false;
 let startX;
 let scrollLeft;
 
 if (sliderGaleria) {
-
     sliderGaleria.addEventListener("mousedown", (e) => {
         isDown = true;
-
         sliderGaleria.classList.add("active");
-
         startX = e.pageX - sliderGaleria.offsetLeft;
         scrollLeft = sliderGaleria.scrollLeft;
     });
 
-    sliderGaleria.addEventListener("mouseleave", () => {
-        isDown = false;
-    });
-
-    sliderGaleria.addEventListener("mouseup", () => {
-        isDown = false;
-    });
+    sliderGaleria.addEventListener("mouseleave", () => { isDown = false; });
+    sliderGaleria.addEventListener("mouseup", () => { isDown = false; });
 
     sliderGaleria.addEventListener("mousemove", (e) => {
-
         if (!isDown) return;
-
         e.preventDefault();
-
         const x = e.pageX - sliderGaleria.offsetLeft;
         const walk = (x - startX) * 2;
-
         sliderGaleria.scrollLeft = scrollLeft - walk;
     });
 }
 
-/* ==========================================================================\
-   PLAYER DE MÚSICA YOUTUBE
-\========================================================================== */
+/* ==========================================================================
+   SISTEMA DE CONTROLE DA MÚSICA LOCAL (PLAY / PAUSE MP3)
+========================================================================== */
 
-let playerYT;
 let musicaTocando = false;
 
-function onYouTubeIframeAPIReady() {
-
-    playerYT = new YT.Player("youtube-audio-player", {
-
-        videoId: CONFIG.youtubeId,
-
-        playerVars: {
-            autoplay: 0,
-            controls: 0,
-            loop: 1,
-            playlist: CONFIG.youtubeId,
-            modestbranding: 1,
-            rel: 0
-        },
-
-        events: {
-            onReady: onPlayerReady
-        }
-    });
-}
-
-function onPlayerReady(event) {
-    const musicTitle = document.getElementById("music-title");
-
-    if (musicTitle) {
-        musicTitle.innerText = CONFIG.nomeMusica;
-    }
-}
-
 function toggleMúsica() {
-
-    if (!playerYT || typeof playerYT.playVideo !== "function") return;
+    const localAudio = document.getElementById("local-audio-player");
+    if (!localAudio) return;
 
     const btn = document.getElementById("play-pause-btn");
     const icon = document.querySelector(".music-icon");
     const tip = document.getElementById("music-tip");
 
     if (!musicaTocando) {
-
-        playerYT.playVideo();
-
-        if (btn) {
-            btn.innerText = "⏸";
-            btn.classList.add("playing");
-        }
-
-        if (icon) {
-            icon.classList.add("playing");
-        }
-
-        if (tip) {
-            tip.style.display = "none";
-        }
-
-        musicaTocando = true;
-
+        localAudio.play()
+            .then(() => {
+                if (btn) {
+                    btn.innerText = "⏸";
+                    btn.classList.add("playing");
+                }
+                if (icon) icon.classList.add("playing");
+                if (tip) tip.style.display = "none";
+                musicaTocando = true;
+            })
+            .catch(err => console.log("Aguardando interação inicial para tocar: ", err));
     } else {
-
-        playerYT.pauseVideo();
-
+        localAudio.pause();
         if (btn) {
             btn.innerText = "▶";
             btn.classList.remove("playing");
         }
-
-        if (icon) {
-            icon.classList.remove("playing");
-        }
-
+        if (icon) icon.classList.remove("playing");
         musicaTocando = false;
     }
 }
 
-/* ==========================================================================\
+/* ==========================================================================
    PARTÍCULAS DE CORAÇÃO (CANVAS)
-\========================================================================== */
+========================================================================== */
 
 const canvas = document.getElementById("heartCanvas");
 const ctx = canvas ? canvas.getContext("2d") : null;
-
 let particulas = [];
-
 const maxParticulas = 40;
 
 if (canvas && ctx) {
-
     function redimensionarCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
 
     window.addEventListener("resize", redimensionarCanvas);
-
     redimensionarCanvas();
 
     class Coracao {
-
         constructor() {
             this.reset();
             this.y = Math.random() * canvas.height;
@@ -510,87 +420,48 @@ if (canvas && ctx) {
         reset() {
             this.x = Math.random() * canvas.width;
             this.y = canvas.height + 20;
-
             this.tamanho = Math.random() * 12 + 6;
-
             this.velocidadeY = -(Math.random() * 0.8 + 0.4);
-
             this.oscilacaoVelocidade = Math.random() * 0.02 + 0.01;
-
             this.oscilacaoDistancia = Math.random() * 1.5;
-
             this.angulo = Math.random() * Math.PI;
-
             this.opacidade = Math.random() * 0.4 + 0.15;
         }
 
         atualizar() {
             this.y += this.velocidadeY;
-
             this.angulo += this.oscilacaoVelocidade;
-
             this.x += Math.sin(this.angulo) * this.oscilacaoDistancia;
 
-            if (
-                this.y < -20 ||
-                this.x < -20 ||
-                this.x > canvas.width + 20
-            ) {
+            if (this.y < -20 || this.x < -20 || this.x > canvas.width + 20) {
                 this.reset();
             }
         }
 
         desenhar() {
-
             ctx.save();
-
             ctx.globalAlpha = this.opacidade;
-
             ctx.translate(this.x, this.y);
-
             ctx.beginPath();
-
             ctx.moveTo(0, 0);
-
-            ctx.bezierCurveTo(
-                -this.tamanho / 2,
-                -this.tamanho / 2,
-                -this.tamanho,
-                this.tamanho / 3,
-                0,
-                this.tamanho
-            );
-
-            ctx.bezierCurveTo(
-                this.tamanho,
-                this.tamanho / 3,
-                this.tamanho / 2,
-                -this.tamanho / 2,
-                0,
-                0
-            );
-
+            ctx.bezierCurveTo(-this.tamanho / 2, -this.tamanho / 2, -this.tamanho, this.tamanho / 3, 0, this.tamanho);
+            ctx.bezierCurveTo(this.tamanho, this.tamanho / 3, this.tamanho / 2, -this.tamanho / 2, 0, 0);
             ctx.fillStyle = "#ff2a4b";
-
             ctx.fill();
-
             ctx.restore();
         }
     }
 
     for (let i = 0; i < maxParticulas; i++) {
-        particulas.push(new Coracao());
+        partculas.push(new Coracao());
     }
 
     function loopAnimacaoCorta() {
-
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
         for (let i = 0; i < particulas.length; i++) {
-            particulas[i].atualizar();
-            particulas[i].desenhar();
+            partculas[i].atualizar();
+            partculas[i].desenhar();
         }
-
         requestAnimationFrame(loopAnimacaoCorta);
     }
 
